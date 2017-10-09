@@ -4,3 +4,5 @@
 543 (improve time)
 410 (station balance) (wrong answer)
 1193 (radar installation) (wrong answer)
+102
+10235 (runtime error)
