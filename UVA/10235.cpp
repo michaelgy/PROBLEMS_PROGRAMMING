@@ -4,7 +4,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#define MAX 1e6+1
+#define MAX 1e6
 #define MAXP (int)sqrt(MAX)
 
 using namespace std;
@@ -31,12 +31,12 @@ int main(){
     for(j = scanf("%d",&n); j != EOF; j = scanf("%d",&n)){
         printf("%d is ",n);
         p = true;
-        for(i=0;primes[i]<=sqrt(n) && p;i++){
+        for(i=0;primes[i]<=sqrt(n) && p && i<pcount;i++){
             if(n%primes[i]==0){
                 p=false;
             }
         }
-        if(p){
+        if(p && n>1){
             s = to_string(n);
             reverse(s.begin(),s.end());
             while(s[0] == '0'){
@@ -45,7 +45,7 @@ int main(){
             nc = n;
             n = stoi(s);
             p = nc != n;
-            for(i=0;primes[i]<=sqrt(n) && p;i++){
+            for(i=0;primes[i]<=sqrt(n) && p && i<pcount;i++){
                 if(n%primes[i]==0){
                     p=false;
                 }
