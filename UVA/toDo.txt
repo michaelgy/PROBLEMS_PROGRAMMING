@@ -1,6 +1,4 @@
 152 (Tree's Crowd)
-10114
 13117
 410 (station balance) (wrong answer)
-1193 (radar installation) (wrong answer)
 102
