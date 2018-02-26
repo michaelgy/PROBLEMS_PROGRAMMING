@@ -1,4 +1,6 @@
-#This code was used for debug the 554 uva problem (my 100th problem)
+#This code was used for debug the 556 uva problem (my 100th problem)
+#The mayor part of this code was taken from:
+#https://stackoverflow.com/questions/7591294/how-to-create-a-self-resizing-grid-of-buttons-in-tkinter
 from tkinter import *
 
 root = Tk()
