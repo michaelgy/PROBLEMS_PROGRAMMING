@@ -1,71 +1,43 @@
 from sys import stdin
+
 r = stdin.readline
+rows,columns,n = map(int,r().split())
+movec = [[0]*10 for i in range(10)]
+out = []
 
-M = 10
-grid = [[0]*M for i in range(M)]
-reco = [[0]*M for i in range(M)]
-path = [[0,0] for i in range(M*M)]
+def clean_movec(rows,columns):
+    for i in range(rows):
+        for j in range(columns):
+            movec[i][j] = 0
 
-"""
-0 = south
-1 = west
-2 = north
-3 = east
-"""
-def movement(f,c):
-    v = grid[f][c]
-    if v == 0:
-        return (f+1,c)
-    if v == 1:
-        return (f,c-1)
-    if v == 2:
-        return (f-1,c)
-    if v == 3:
-        return (f,c+1)
+def in_matrix(pos,rows,columns):
+    return -1<pos[0] and pos[0]<rows and -1<pos[1] and pos[1]<columns
 
+def move(pos,inst):
+    if inst[pos[0]][pos[1]] == "W":
+        pos[1] -= 1
+    elif inst[pos[0]][pos[1]] == "E":
+        pos[1] += 1
+    elif inst[pos[0]][pos[1]] == "S":
+        pos[0] += 1
+    elif inst[pos[0]][pos[1]] == "N":
+        pos[0] -= 1
 
-def robot(F,C,i):
-    steps = 0
-    cycle = 0
-    ac = (0,i-1)
-    path[0][0], path[0][1] = ac
-    nend = True
-    while nend:
-        if ac[1] == C or ac[0] == F or ac[1] == -1 or ac[0] == -1:
-            nend = False
-        elif reco[ac[0]][ac[1]] == 1:
-            steps -= 1
-            cycle += 1
-            while ac[0] != path[steps][0] or ac[1] != path[steps][1]:
-                steps -= 1
-                cycle += 1
-            nend = False
-        else:
-            reco[ac[0]][ac[1]] = 1
-            path[steps][0], path[steps][1] = ac
-            ac = movement(*ac)
-            steps += 1
-    return (steps,cycle)
-            
-F,C,init = map(int,r().split())
-while F:
-    for i in range(F):
-        l = r().strip()
-        for j in range(C):
-            ch = l[j]
-            reco[i][j] = 0
-            if ch == "S":
-                grid[i][j] = 0 
-            elif ch == "W":
-                grid[i][j] = 1
-            elif ch == "N":
-                grid[i][j] = 2
-            else:
-                grid[i][j] = 3
-    steps,cycle = robot(F,C,init)
-    if cycle:
-        print("{} step(s) before a loop of {} step(s)".format(steps,cycle))
+while rows:
+    inst = [r().strip() for e in range(rows)]
+    pos = [0,n-1]
+    n = 1
+    clean_movec(rows,columns)
+    while in_matrix(pos,rows,columns) and movec[pos[0]][pos[1]] == 0:
+        movec[pos[0]][pos[1]] = n
+        move(pos,inst)
+        n+=1
+    if in_matrix(pos,rows,columns):
+        h = movec[pos[0]][pos[1]]
+        out.append("{} step(s) before a loop of {} step(s)\n".format(h-1,n-h))
     else:
-        print("{} step(s) to exit".format(steps))
-    F,C,init = map(int,r().split())
-        
+        out.append("{} step(s) to exit\n".format(n-1))
+    rows,columns,n = map(int,r().split())
+
+print("".join(out),end="")
+
