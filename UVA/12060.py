@@ -1,49 +1,52 @@
-def gcd(a,b):
-    c = max(a,b)
-    b = min(a,b)
-    k = c%b
-    while k!=0:
-        c = b
-        b = k
-        k = c%b
-    return b 
-data = [int(e) for e in input().split()]
-i = 0
-while data[0]:
+from sys import stdin
+from math import gcd
+
+inbuffer = [[int(i) for i in e.split()] for e in stdin.readlines()]
+out = []
+
+for i in range(len(inbuffer)-1):
+    s = sum(inbuffer[i][1:])
+    n = inbuffer[i][0]
     i+=1
-    svalue = sum(data[1:])
-    a = abs(svalue)//data[0]
-    b = abs(svalue)%data[0]
-    c = data[0]
-    if b>1:
-        k = gcd(b,c)
-        b //= k
-        c //= k
-    print("Case {}:".format(i))
-    if b<1:
-        if svalue<0:
-            print("- {}".format(a))
+    out.append("Case {}:".format(i))
+    if s%n == 0:
+        if s>=0:
+            out.append("{}".format(s//n))
         else:
-            print(a)
+            out.append("- {}".format(abs(s//n)))
+    elif n>abs(s):
+        x = gcd(s,n)
+        s //= x
+        n //= x
+        sp = len(str(n))
+        if s>=0:
+            out.append(("{:>"+str(sp)+"}").format(s))
+            out.append("-"*sp)
+            out.append(str(n))
+        else:
+            out.append(("  {:>"+str(sp)+"}").format(abs(s)))
+            out.append("- "+"-"*sp)
+            out.append("  "+str(n))
     else:
-        db = len(str(c))
-        la = len(str(a))
-        avg = abs(svalue/c)
-        if avg>1:
-            db+=la
-        if svalue<0:
-            db+=2
-        print(("{:>"+str(db)+"}").format(b))
-        if svalue<0:
-            if avg>1:
-                print("- "+str(a)+"-"*(db-la-2))
-            else:
-                print("- "+"-"*(db-2))
+        a = abs(s)//n*(-1 if s<0 else 1)
+        s = abs(s-a*n)
+        x = gcd(s,n)
+        s //= x
+        n //= x
+        sp = len(str(n))
+        asp = len(str(a))
+        if a>=0:
+            out.append((" "*asp+"{:>"+str(sp)+"}").format(s))
+            out.append(str(a)+"-"*sp)
+            out.append(" "*asp+str(n))
         else:
-            if avg>1:
-                print(str(a)+"-"*(db-la))
-            else:
-                print("-"*db)
-        print(("{:>"+str(db)+"}").format(c))
-    data = [int(e) for e in input().split()]
+            out.append((" "*(asp+1)+"{:>"+str(sp)+"}").format(s))
+            out.append("- "+str(abs(a))+"-"*sp)
+            out.append(" "*(asp+1)+str(n))
+        
+        
+        
+print("\n".join(out))
+
+            
 
